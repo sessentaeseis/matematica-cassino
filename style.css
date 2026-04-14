@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    color: #38bdf8;
+    margin-bottom: 20px;
+}
+
+.game-card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 16px;
+    width: 320px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.label {
+    margin-bottom: 10px;
+}
+
+.bets {
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.bet {
+    background: #334155;
+    color: white;
+}
+
+.bet:hover {
+    background: #475569;
+}
+
+.bet.active {
+    background: #38bdf8;
+}
+
+.play {
+    background: #22c55e;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.play:hover {
+    background: #16a34a;
+}
+
+.symbols {
+    font-size: 50px;
+    margin: 20px 0;
+    letter-spacing: 10px;
+}
+
+.info {
+    font-size: 16px;
+}
+
+.win {
+    color: #22c55e;
+}
+
+.lose {
+    color: #ef4444;
+}
+
+#reset {
+    background: #ef4444;
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#reset:hover {
+    background: #dc2626;
+}

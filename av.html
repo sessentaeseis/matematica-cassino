@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cassino Combinatório</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🎰 Cassino Combinatório</h1>
+
+    <div class="game-card">
+
+        <p class="label">Escolha sua aposta:</p>
+
+        <div class="bets">
+            <button class="bet" data-bet="triplo">Todos Iguais (x20)</button>
+            <button class="bet" data-bet="par">Um Par (x2)</button>
+            <button class="bet" data-bet="diferentes">Todos Diferentes (x1.5)</button>
+        </div>
+
+        <button class="play">Jogar (-10)</button>
+        <button id="reset" style="display: none;">Reiniciar fichas</button>
+
+        <div class="symbols" id="symbols">❓ ❓ ❓</div>
+
+        <div class="info">
+            <p>Fichas: <span id="coins">100</span></p>
+            <p>Aposta atual: <span id="currentBet">Nenhuma</span></p>
+            <p id="result"></p>
+            
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
