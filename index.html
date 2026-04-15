@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>KASSINO</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="imgs/kassino.png" type="image/x-icon">
+</head>
+
+<body>
+
+<div class="maintitle">
+    <img id="kassinoicon" src="imgs/kassino.png" alt="">
+    <h1>[KASSINO]</h1>
+    
+</div>
+
+<div class="layout">
+
+    <div class="left">
+
+        <div class="game-card">
+            <h3>[Aposta]</h3>
+            <div class="stats">
+                <div class="stat tooltip">
+                    Fichas
+                    <span id="coins">100</span>
+                    <div class="tooltip-box">Total de fichas disponíveis para apostar</div>
+                </div>
+
+                <div class="stat tooltip">
+                    F/s
+                    <span id="cps">1</span>
+                    <div class="tooltip-box">Fichas geradas automaticamente a cada segundo</div>
+                </div>
+
+                <div class="stat tooltip">
+                    Multiplicador
+                    <span id="multi">1x</span>
+                    <div class="tooltip-box">Multiplica o valor dos ganhos</div>
+                </div>
+            </div>
+
+            <div class="bets">
+                <button class="bet" data-bet="triplo">Triplo (x20)</button>
+                <button class="bet" data-bet="par">Par (x2)</button>
+                <button class="bet" data-bet="diferentes">Dif (x1.5)</button>
+            </div>
+
+            <button class="play">Jogar (-10)</button>
+
+            <div class="symbols" id="symbols">❓ ❓ ❓</div>
+            <p id="result" class="result"></p>
+
+        </div>
+
+        <div class="log">
+            <div class="log-header">[Histórico]</div>
+            <div class="log-content" id="log"></div>
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="shop">
+            <h3>[Loja]</h3>
+            <div id="shop"></div>
+        </div>
+
+        <div class="inventory">
+            <h3>[Inventário]</h3>
+            <div id="inventory"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <hr>
+    <p><b>Desenvolvido por: Antonio V, Arthur W, Lucas V e Miguel W | 3B</b><br>Atividade Avaliativa 1 (Prim. Trimestre) | Matemática</p>
+    <a href="https://github.com/sessentaeseis/matematica-cassino"><img src="imgs/github.png"></a>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
