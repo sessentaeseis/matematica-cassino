@@ -76,7 +76,7 @@ setInterval(()=>{
 setInterval(()=>{
     if(Math.random() < 0.01){
         coins += 100;
-        addLog(">✨ Evento raro: +100", "info");
+        addLog("> Evento raro: +100", "info");
         updateUI();
     }
 },4000);
@@ -129,7 +129,7 @@ function buyItem(id){
     updateUI();
     renderShop();
     renderInventory();
-    addLog(`>🛒 Comprado: ${item.name}`, "buy");
+    addLog(`> Comprado: ${item.name}`, "buy");
     setResultText(`Comprado: ${item.name}`);
     animateResult("buy");
     highlightInventoryItem(id);
@@ -145,13 +145,13 @@ function rand(){
 function play(){
     if(isSpinning) return;
     if(!currentBet){
-        setResultText(">ione uma aposta antes de jogar.");
-        addLog(">⚠️ Selecione uma aposta antes de jogar.", "info");
+        setResultText("> Selecione uma aposta antes de jogar.");
+        addLog("> Selecione uma aposta antes de jogar.", "info");
         return;
     }
     if(coins < BET_COST){
         setResultText("Você precisa de pelo menos 10 fichas para jogar.");
-        addLog("⚠️ Fichas insuficientes.", "info");
+        addLog("Fichas insuficientes.", "info");
         return;
     }
 
@@ -179,11 +179,11 @@ function play(){
         if(res === currentBet){
             let gain = rewards[res] * multiplier;
             coins += gain;
-            addLog(`>🎰 ${res} → +${Math.floor(gain)}`, "win");
+            addLog(`> ${res} → +${Math.floor(gain)}`, "win");
             setResultText(`Você ganhou +${Math.floor(gain)} fichas!`);
             animateResult("win");
         } else {
-            addLog(`>🎰 ${res} → -10`, "lose");
+            addLog(`> ${res} → -10`, "lose");
             setResultText(`Resultado: ${s1} ${s2} ${s3} - Você perdeu.`);
             animateResult("lose");
         }
