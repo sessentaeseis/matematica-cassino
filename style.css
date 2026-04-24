@@ -150,6 +150,78 @@ h3,.log-header {
     background: rgba(255, 255, 255, 0.04);
 }
 
+/* BET AMOUNT CONTROLS */
+.bet-amount {
+    margin-bottom: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid #222;
+    border-radius: 4px;
+}
+
+.bet-amount label {
+    display: block;
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+}
+
+.bet-controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.bet-btn {
+    background: #333;
+    border: 1px solid #555;
+    color: #f59e0b;
+    padding: 4px 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+.bet-btn:hover {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: black;
+}
+
+#bet-input {
+    flex: 1;
+    background: #111;
+    border: 1px solid #555;
+    color: #f59e0b;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+#bet-input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+#bet-input::-webkit-outer-spin-button,
+#bet-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#bet-input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
 /* PLAY */
 .play {
     width: 100%;
@@ -273,6 +345,36 @@ h3,.log-header {
     transform: scale(1.02);
 }
 
+/* INVENTORY */
+.inventory {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+}
+
+#inventory {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+}
+
+#inventory::-webkit-scrollbar {
+    width: 8px;
+}
+
+#inventory::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#inventory::-webkit-scrollbar-thumb {
+    background: #f59e0b;
+    border-radius: 4px;
+}
+
+#inventory::-webkit-scrollbar-thumb:hover {
+    background: #fbbf24;
+}
+
 .bet:hover,
 .play:hover,
 .item button:hover:not(:disabled) {
@@ -318,6 +420,36 @@ h3,.log-header {
     }
 }
 
+/* SHOP */
+.shop {
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+}
+
+#shop {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+}
+
+#shop::-webkit-scrollbar {
+    width: 8px;
+}
+
+#shop::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+#shop::-webkit-scrollbar-thumb {
+    background: #f59e0b;
+    border-radius: 4px;
+}
+
+#shop::-webkit-scrollbar-thumb:hover {
+    background: #fbbf24;
+}
+
 /* LOG */
 .log {
     display: flex;
@@ -328,6 +460,24 @@ h3,.log-header {
 .log-content {
     overflow-y: auto;
     flex: 1;
+    padding-right: 8px;
+}
+
+.log-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.log-content::-webkit-scrollbar-thumb {
+    background: #f59e0b;
+    border-radius: 4px;
+}
+
+.log-content::-webkit-scrollbar-thumb:hover {
+    background: #fbbf24;
 }
 
 .log-entry {
