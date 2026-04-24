@@ -26,6 +26,12 @@ const rewards = {
     diferentes: 15
 };
 
+const multipliers = {
+    triplo: 20,
+    par: 2,
+    diferentes: 1.5
+};
+
 const shopItems = [
     // GERADORES DE RENDA PASSIVA
     { id:"auto1", name:"Gerador Básico", desc:"+1 ficha por segundo", cost:50, unlock:0, effect:()=>cps+=1 },
@@ -41,13 +47,13 @@ const shopItems = [
 
     // OTIMIZAÇÕES DE RECOMPENSAS
     { id:"luck", name:"Otimização Base", desc:"Aumenta ganhos base em 30%", cost:900, unlock:500, effect:()=>{
-        rewards.triplo*=1.3;
-        rewards.par*=1.3;
-        rewards.diferentes*=1.3;
+        multipliers.triplo*=1.3;
+        multipliers.par*=1.3;
+        multipliers.diferentes*=1.3;
     }},
-    { id:"triplo_boost", name:"Potenciador Triplo", desc:"+100% em ganhos com triplo", cost:500, unlock:300, effect:()=>rewards.triplo*=2 },
-    { id:"par_boost", name:"Potenciador Par", desc:"+80% em ganhos com par", cost:400, unlock:250, effect:()=>rewards.par*=1.8 },
-    { id:"diff_boost", name:"Potenciador Diferentes", desc:"+150% em ganhos com diferentes", cost:350, unlock:200, effect:()=>rewards.diferentes*=2.5 },
+    { id:"triplo_boost", name:"Potenciador Triplo", desc:"+100% em ganhos com triplo", cost:500, unlock:300, effect:()=>multipliers.triplo*=2 },
+    { id:"par_boost", name:"Potenciador Par", desc:"+80% em ganhos com par", cost:400, unlock:250, effect:()=>multipliers.par*=1.8 },
+    { id:"diff_boost", name:"Potenciador Diferentes", desc:"+150% em ganhos com diferentes", cost:350, unlock:200, effect:()=>multipliers.diferentes*=2.5 },
 
     // EVENTOS ESPECIAIS E SORTE
     { id:"rarity_inc", name:"Amplificador de Eventos Raros", desc:"Eventos raros +50% frequência", cost:700, unlock:400, effect:()=>{
@@ -272,9 +278,10 @@ function play(){
         else res="diferentes";
 
         if(res === currentBet){
-            let gain = rewards[res] * multiplier;
+            let baseMultiplier = multipliers[res];
+            let gain = baseMultiplier * multiplier * betCost;
             coins += gain;
-            addLog(`> ${res} → +${Math.floor(gain)}`, "win");
+            addLog(`> ${res} (x${baseMultiplier} mult, ${betCost} fichas gastas): +${Math.floor(gain)}`, "win");
             setResultText(`Você ganhou +${Math.floor(gain)} fichas!`);
             animateResult("win");
             consecutiveWins++;
@@ -287,7 +294,7 @@ function play(){
             }
         } else {
             let lostAmount = betCost;
-            addLog(`> ${res} → -${lostAmount}`, "lose");
+            addLog(`> ${res} (${betCost} fichas gastas): -${lostAmount}`, "lose");
             setResultText(`Resultado: ${s1} ${s2} ${s3} - Você perdeu.`);
             animateResult("lose");
             consecutiveWins = 0;
@@ -296,14 +303,14 @@ function play(){
             if(hasMinerPassive){
                 let steal = 2;
                 coins += steal;
-                addLog(`🔧 Minerador: +${steal}`, "info");
+                addLog(`> Minerador: +${steal}`, "info");
             }
             
             // SISTEMA DE RESGATE
             if(hasRebate){
                 let rebateAmount = Math.floor(betCost * 0.3);
                 coins += rebateAmount;
-                addLog(`💰 Resgate (30%): +${rebateAmount}`, "info");
+                addLog(`> Resgate (30%): +${rebateAmount}`, "info");
             }
         }
 
