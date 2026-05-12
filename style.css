@@ -234,6 +234,32 @@ h3,.log-header {
     transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
+/* CLICK BUTTON - harmonizado com .play e .item button */
+.click-btn {
+    width: 100%;
+    background: #f59e0b; /* mesmo laranja do tema */
+    border: none;
+    padding: 10px;
+    color: black; /* mesmo estilo do .play */
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+    display: inline-block;
+}
+
+.click-btn:hover {
+    background: #f7b955; /* tom mais claro no hover */
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12);
+    transform: translateY(-2px);
+}
+
+.click-btn:active {
+    transform: translateY(0);
+}
+
 /* SLOT */
 .symbols {
     text-align: center;

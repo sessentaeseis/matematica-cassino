@@ -18,6 +18,20 @@ let hasChainReact = false;
 let jackpotValue = 100;
 let betCost = 10;
 
+// NOVAS MECÂNICAS DE GRIND
+let totalSpins = 0;
+let streakWins = 0;
+let streakLoses = 0;
+let maxStreakWins = 0;
+let clickPower = 1;
+let clickCount = 0;
+let totalClicks = 0;
+let dailyBonus = 0;
+let dailyBonusCollected = false;
+let sessionTime = 0;
+let hasAutoPlay = false;
+let autoPlayCount = 0;
+
 const BET_COST = 10; // Valor inicial padrão
 
 const rewards = {
@@ -94,6 +108,52 @@ const shopItems = [
         multiplier*=2;
         addLog("> Modo Divino desbloqueado!", "buy");
     }},
+
+    // CLICK POWER & AUTOMAÇÃO
+    { id:"click_power", name:"Poder do Clique", desc:"+1 ficha por clique manual", cost:100, unlock:50, effect:()=>{
+        clickPower += 1;
+        addLog("> Poder do Clique aumentado!", "info");
+    }},
+    { id:"auto_play_1", name:"AutoPlay Nível 1", desc:"Joga automaticamente a cada 3s", cost:500, unlock:300, effect:()=>{
+        hasAutoPlay = true;
+        autoPlayInterval = setInterval(() => {
+            if(!currentBet || coins < betCost) return;
+            play();
+            autoPlayCount++;
+        }, 3000);
+        addLog("> AutoPlay ativado!", "info");
+    }},
+    { id:"super_clicker", name:"Super Clicker", desc:"Cliques valem 10x mais fichas", cost:1500, unlock:800, effect:()=>{
+        clickPower *= 10;
+        addLog("> Super Clicker desbloqueado!", "buy");
+    }},
+
+    // STREAK REWARDS
+    { id:"streak_bonus", name:"Bônus de Sequência", desc:"Ganhe fichas extras em sequências", cost:700, unlock:400, effect:()=>{
+        addLog("> Sistema de Sequência ativado!", "info");
+    }},
+    { id:"streak_multiplier", name:"Multiplicador de Sequência", desc:"Sequências dão 2x mais fichas", cost:2000, unlock:1000, effect:()=>{
+        addLog("> Multiplicador de Sequência ativado!", "info");
+    }},
+
+    // SESSION REWARDS
+    { id:"session_boost", name:"Bônus de Sessão", desc:"Ganhe 5% extra a cada 5 min de jogo", cost:1200, unlock:600, effect:()=>{
+        addLog("> Bônus de Sessão ativado!", "info");
+    }},
+    { id:"daily_bonus", name:"Bônus Diário", desc:"Colete 500 fichas uma vez por dia", cost:2500, unlock:1500, effect:()=>{
+        coins += 500;
+        dailyBonusCollected = true;
+        dailyBonus = Date.now();
+        addLog("> Bônus Diário coletado! +500", "buy");
+    }},
+
+    // MILESTONE REWARDS
+    { id:"milestone_1k", name:"Milestone 1K", desc:"Prêmio ao atingir 1k spins", cost:3000, unlock:1500, effect:()=>{
+        addLog("> Desbloqueado acesso a Milestones!", "info");
+    }},
+    { id:"milestone_10k", name:"Milestone 10K", desc:"Prêmio ao atingir 10k spins", cost:8000, unlock:4000, effect:()=>{
+        addLog("> Milestone 10K desbloqueado!", "info");
+    }},
 ];
 
 let inventory = {};
@@ -103,12 +163,14 @@ let log = [];
 const coinsEl = document.getElementById("coins");
 const cpsEl = document.getElementById("cps");
 const multiEl = document.getElementById("multi");
+const spinsEl = document.getElementById("spins");
 const logEl = document.getElementById("log");
 const shopEl = document.getElementById("shop");
 const inventoryEl = document.getElementById("inventory");
 const symbolsEl = document.getElementById("symbols");
 const resultEl = document.getElementById("result");
 const playBtn = document.querySelector(".play");
+const clickBtn = document.querySelector(".click-btn");
 const betInput = document.getElementById("bet-input");
 const btnLess = document.getElementById("btn-less");
 const btnMore = document.getElementById("btn-more");
@@ -158,6 +220,32 @@ document.querySelectorAll(".bet").forEach(btn=>{
         btn.classList.add("active");
     });
 });
+
+/* ======================
+   CLIQUE MANUAL
+====================== */
+clickBtn.addEventListener("click", ()=>{
+    let gain = clickPower;
+    coins += gain;
+    clickCount++;
+    totalClicks++;
+    addLog(`💬 Clique: +${gain}`, "info");
+    updateUI();
+});
+
+/* ======================
+   SESSION & TIME TRACKER
+====================== */
+setInterval(()=>{
+    sessionTime++;
+    
+    // Verificar se ganhou bônus de sessão a cada 5 min (300s)
+    if(sessionTime % 300 === 0 && inventory["session_boost"]){
+        let bonusAmount = Math.floor(coins * 0.05);
+        coins += bonusAmount;
+        addLog(`⏱️ Bônus de Sessão (5min): +${bonusAmount}`, "info");
+    }
+}, 1000);
 
 /* ======================
    CPS LOOP
@@ -277,11 +365,28 @@ function play(){
         else if(s1===s2 || s1===s3 || s2===s3) res="par";
         else res="diferentes";
 
+        totalSpins++;
+
         if(res === currentBet){
             let baseMultiplier = multipliers[res];
             let gain = baseMultiplier * multiplier * betCost;
+            
+            streakWins++;
+            streakLoses = 0;
+            if(streakWins > maxStreakWins) maxStreakWins = streakWins;
+            
+            // BÔNUS DE SEQUÊNCIA
+            let streakBonus = 0;
+            if(inventory["streak_bonus"] && streakWins > 1){
+                streakBonus = Math.floor(gain * (streakWins - 1) * 0.05);
+                if(inventory["streak_multiplier"]) streakBonus *= 2;
+                gain += streakBonus;
+            }
+            
             coins += gain;
-            addLog(`> ${res} (x${baseMultiplier} mult, ${betCost} fichas gastas): +${Math.floor(gain)}`, "win");
+            let logMsg = `> ${res} (x${baseMultiplier} mult, ${betCost} fichas gastas): +${Math.floor(gain)}`;
+            if(streakWins > 3) logMsg += ` [${streakWins} VITÓRIAS 🔥]`;
+            addLog(logMsg, "win");
             setResultText(`Você ganhou +${Math.floor(gain)} fichas!`);
             animateResult("win");
             consecutiveWins++;
@@ -294,6 +399,8 @@ function play(){
             }
         } else {
             let lostAmount = betCost;
+            streakLoses++;
+            streakWins = 0;
             addLog(`> ${res} (${betCost} fichas gastas): -${lostAmount}`, "lose");
             setResultText(`Resultado: ${s1} ${s2} ${s3} - Você perdeu.`);
             animateResult("lose");
@@ -303,15 +410,25 @@ function play(){
             if(hasMinerPassive){
                 let steal = 2;
                 coins += steal;
-                addLog(`> Minerador: +${steal}`, "info");
+                addLog(`🔧 Minerador: +${steal}`, "info");
             }
             
             // SISTEMA DE RESGATE
             if(hasRebate){
                 let rebateAmount = Math.floor(betCost * 0.3);
                 coins += rebateAmount;
-                addLog(`> Resgate (30%): +${rebateAmount}`, "info");
+                addLog(`💰 Resgate (30%): +${rebateAmount}`, "info");
             }
+        }
+
+        // MILESTONES
+        if(totalSpins === 1000 && inventory["milestone_1k"]){
+            coins += 1000;
+            addLog(`🎯 MILESTONE 1K ATINGIDO! +1000`, "buy");
+        }
+        if(totalSpins === 10000 && inventory["milestone_10k"]){
+            coins += 10000;
+            addLog(`🎯 MILESTONE 10K ATINGIDO! +10000`, "buy");
         }
 
         setSymbolsDisplay(s1, s2, s3);
@@ -396,6 +513,7 @@ function updateUI(){
     coinsEl.textContent = Math.floor(coins);
     cpsEl.textContent = cps;
     multiEl.textContent = multiplier.toFixed(2) + "x";
+    spinsEl.textContent = totalSpins;
 }
 
 /* INIT */
